@@ -1,0 +1,5 @@
+# 编译模型--优化器
+model.compile(optimizer=tf.train.AdamOptimizer(),  # 优化器 - 根据模型看到的数据及其损失函数更新模型的方式，此处利用梯度下降的改进adma，还可以使用adagrad, 动量方法等等，后续进行总结！！！（参考链接：https://zhuanlan.zhihu.com/p/36871461， https://keras.io/optimizers/， https://blog.csdn.net/aliceyangxi1987/article/details/73210204）
+<br>&nbsp;&nbsp;&nbsp;loss='sparse_categorical_crossentropy',  # 损失函数 - 衡量模型在训练期间的准确率。我们希望尽可能缩小该函数，以“引导”模型朝着正确的方向优化,此处使用稀疏绝对交叉墒，此外还有mean_squared_error：均方误差，mean_absolute_error：均值绝对误差，mean_absolute_percentage_error：均值绝对百分比误差等等，后续进行总结！！！（参考链接：https://zhuanlan.zhihu.com/p/34667893，  https://keras.io/zh/losses/ ）
+              
+<br>&nbsp;&nbsp;&nbsp;metrics=['accuracy'])  # 指标 - 用于监控训练和测试步骤，此外还有r2 score, 均方差（mean_squared_error）,平均绝对值误差（mean_absolute_error）[适合评价回归模型]，误差（Error）等等，后续进行总结！！！（参考链接：https://blog.csdn.net/Eastmount/article/details/80650980）

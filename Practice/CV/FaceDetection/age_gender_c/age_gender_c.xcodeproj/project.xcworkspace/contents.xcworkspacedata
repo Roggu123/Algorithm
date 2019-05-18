@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:../../age_gender/age_deploy.prototxt">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/ruogulu/Desktop/Study/Algorithm/Practice/CV/FaceDetection/age_gender_c/age_gender_c/age_net.caffemodel">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/ruogulu/Desktop/Study/Algorithm/Practice/CV/FaceDetection/age_gender_c/age_gender_c/gender_deploy.prototxt">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/ruogulu/Desktop/Study/Algorithm/Practice/CV/FaceDetection/age_gender_c/age_gender_c/gender_net.caffemodel">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/ruogulu/Desktop/Study/Algorithm/Practice/CV/FaceDetection/age_gender_c/age_gender_c/opencv_face_detector_uint8.pb">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/ruogulu/Desktop/Study/Algorithm/Practice/CV/FaceDetection/age_gender_c/age_gender_c/opencv_face_detector.pbtxt">
+   </FileRef>
+   <FileRef
+      location = "self:age_gender_c.xcodeproj">
+   </FileRef>
+</Workspace>
