@@ -2,7 +2,7 @@ Table of Contents
 =================
 
    * [第4章 算法优化](#第4章-算法优化)
-      * [       <strong>通过改善训练方式，来最小化(或最大化)损失函数E(x)</strong>(目标函数)](#通过改善训练方式来最小化或最大化损失函数ex目标函数)
+      * [<strong>通过改善训练方式，来最小化(或最大化)损失函数E(x)</strong>(目标函数)](#通过改善训练方式来最小化或最大化损失函数ex目标函数)
       * [4.1 优化原理](#41-优化原理)
          * [4.1.1 费马定理](#411-费马定理)
          * [4.1.2 一阶优化](#412-一阶优化)
@@ -29,6 +29,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;各种优化算法的分类及联系：
 ![Alt text](https://pic2.zhimg.com/80/v2-8626322a8a7a3ec0a5ad25bdee856d6d_hd.jpg)
+<center>图4-1.算法分类</center>
 
 ### <a id='411-费马定理'>4.1.1 费马定理</a>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于一个可导函数，寻找其极值的统一做法是寻找导数或梯度为0的点，即**费马定理**。
@@ -49,8 +50,9 @@ $$
 ## 4.2 常用优化算法  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优化算法总览：  
 
-![Alt text](优化算法总览.png)
-最优化问题可分为两类，一是无约束最优化问题，二是有约束最优化问题。求解无约束最优化问题的常用方法有梯度下降算法，梯度下降算法的优化与牛顿法。求解无约束最优化问题的常用方法有
+![Alt text](Pictures/优化算法总览.png)  
+<center>图4-2.优化算法总览</center>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最优化问题可分为两类，一是无约束最优化问题，二是有约束最优化问题。求解无约束最优化问题的常用方法有梯度下降算法，梯度下降算法的优化与牛顿法。求解无约束最优化问题的常用方法有
 BGD，SGD，MBGD，momentum,nesterov,Adgrad，LBFGS
 ### 4.2.1 梯度下降算法
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;梯度下降指的是，在给定模型参数$\theta\in \mathbb{R}^d$和目标函数 $J(\theta)$ 后，通过沿梯度$\nabla_\theta J(\theta)$的反方向更新参数，不断优化函数，找到函数的局部极小值点。随机梯度下降可概括为如下三步：
@@ -75,7 +77,8 @@ $$
 $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**优点**：得到全局最优解，易于并行实现；  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**缺点**：当样本数据过大时，训练过程很慢；
-![Alt text](BGD.png)
+![Alt text](Pictures/BGD.png)  
+<center>图4-3.BGD</center>
     
 ----------------
 
@@ -98,7 +101,8 @@ $$
 $$  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**优点：**训练速度快；  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**缺点：**准确度低（收敛速度慢），不是全局最优点，在鞍点处震荡，不易并行实现；
-![Alt text](SGD.png)
+![Alt text](Pictures/SGD.png)  
+<center>图4-4.SGD1</center>
   
  ----------------- 
  
@@ -141,12 +145,13 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简而言之，当要改变运动趋势时，不仅要克服加速度的影响也要克服速度的影响，即使加速度为零，剩余的速度（惯性）依然会让物体继续运动。  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SGD与Momentum对比：
 
-<center> ![SGD](SGD1.jpg) </center> 
-<center>SGD</center>
-<center> ![Alt text](Momentum.jpg) </center> 
-<center>Momentum</center>   
+<center> ![SGD](Pictures/SGD1.jpg) </center> 
+<center>图4-5.SGD2</center>
+<center> ![Alt text](Pictures/Momentum.jpg) </center> 
+<center>图4-6.Momentum</center>   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;权威参考如下([On the importance of initialization and momentum in deep learning](http://www.cs.toronto.edu/~hinton/absps/momentum.pdf))：  
-<center>![Alt text](https://img-blog.csdn.net/20180518134945614)</center> 
+<center>![Alt text](https://img-blog.csdn.net/20180518134945614)</center>  
+<center>图4-7.参考一</center> 
 
 -----------
 
@@ -163,11 +168,12 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**缺点：**暂时还不知道；    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nesterov与Momentum的区别就是在于求动量改变量$g_t$时有所不同，Momentum 是利用当前位置求梯度（$\nabla J(\theta_{t})$）而 Nesterov 是利用估计的下一时刻位置求梯度（$\nabla J(\theta_t+\alpha v_t)$），其余都一样。因为这个不同，Nesterov可以提前纠正动量方向的偏差。  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;利用下图可以更好地理解Nesterov：  
-![Nesterov](Nesterov.jpg)  
+![Nesterov](Pictures/Nesterov.jpg)  
+<center>图4-8.Nesterov</center>  
 SGD-M 的步长计算了当前梯度（短蓝向量）和动量项 （长蓝向量）。然而，既然已经利用了动量项来更新 ，那不妨先计算出下一时刻 \theta 的近似位置 （棕向量），并根据该未来位置计算梯度（红向量），然后使用和 SGD-M 中相同的方式计算步长（绿向量）。这种计算梯度的方式可以使算法更好的「预测未来」，提前调整更新速率。  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;权威参考如下（lan goodfellow 《deep learning》）：   
-![Alt text](https://img-blog.csdn.net/20180518170114716)
-  
+![Alt text](https://img-blog.csdn.net/20180518170114716)  
+<center>图4-9.参考二</center>
   
 --------------  
 
@@ -209,7 +215,8 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**优点：** 1. 非常适合处理稀疏数据； 2. 优化了Adgrad的缺点；  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**缺点：**暂时不知道；  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;权威参考如下(《AdaDelta: An Adaptive Learning Rate Method》)：  
-![Alt text](https://img-blog.csdn.net/2018052100464631)
+![Alt text](https://img-blog.csdn.net/2018052100464631)  
+<center>图4-10.参考三</center>
 
 + **RMSprop**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RMSprop算法也是对Adgrad算法的改进，它对Adgrad算法的早停问题进行了改进，采取的思路与Adadelta差不多。具体公式如下：  
@@ -224,6 +231,7 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**缺点：**依赖全局学习率；  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;权威参考如下（lan goodfellow 《deep learning》）： 
 ![Alt text](https://img-blog.csdn.net/20180521210222433)  
+<center>图4-11.参考四</center>  
 
 + **Adam**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adam 算法结合了 Momentum 和 Rmsporp 两者的思想，对局部震荡和早停的问题做出了改进。具体公式如下：  
@@ -239,6 +247,7 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$\rho_1^t$与$\rho_2^t$中t表示t次幂。  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;权威参考如下（Diederik P. Kingma et al. ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION, ICLR2015）：  
 ![Alt text](https://img-blog.csdn.net/20180522131011961)  
+<center>图4-12.参考五</center>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本文中最后一个公式是当前参数$\theta_t$减去此时改变量$\alpha \frac{\widehat m_t}{\sqrt{\widehat r_t}+\epsilon}$，从而得到下一时刻参数$\theta_{t+1}$，而参考资料中是当前参数$\theta_{t-1}$与下一时刻改变量$\alpha \frac{\widehat m_t}{\sqrt{\widehat r_t}+\epsilon}$求差，貌似存在矛盾，其实道理一样，本文利用当前参数$\theta_t$求当前梯度$g_t$，而参考资料是利用前一刻参数$\theta_{t-1}$求当前梯度$g_t$，如果将资料中的$g_t$写为$g_{t-1}$，结果与本文是相同的。  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**优点：** 1. 非常适合处理稀疏数据； 2. 优化了Adgrad早停的问题；3. 优化了局部震荡问题；  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**缺点：**依赖全局学习率；
@@ -288,7 +297,7 @@ $$x_{k+1}=x_k+p_k\tag{4.7}$$
 >*&nbsp;&nbsp;&nbsp;&nbsp;这个问题很简单，我们是对 $x$ 进行求导，而 $f(x_k)$ 中并没有 $x_k$，因此求导后 $f(x_k)$ 为零。*  
 >  
 >*2. 我一直陷入一个误区，认为优化就是沿着梯度的反方向移动，以凸函数为例：*
-> ![Alt text](y=x^2.png)
+> ![Alt text](Pictures/y=x^2.png)
 > *当初始点为$A$时，沿梯度反方向（即梯度下降的方向）移动，可以到达最优解，但初始点为$B$时，沿梯度下降方向移动岂不是越移越远了吗？  
 > 其实我理解是错误的，更加规范的说法是<b>沿负梯度方向移动</b>，当位于$A$点时，梯度为正，负梯度即向梯度减小的方向移动，而$B$点梯度为负，负梯度是向梯度增大的方向移动。所以不管梯度正还是负，沿梯度负方向移动都是向极小值点移动。*  
  
@@ -322,8 +331,9 @@ $$
 + **为什么要那样假设？**   
 在DFP算法中总结
 + **为什么牛顿法收敛速度更快？**  
-  
-+ **拟牛顿法如何保证$G_{k+1}$的正定性？**
+[QuestionInNewton](/Users/ruogulu/Desktop/Study/Algorithm/MyNote/QuestionInNetwon.md)
++ **拟牛顿法如何保证$G_{k+1}$的正定性？**  
+[QuestionInNewton](/Users/ruogulu/Desktop/Study/Algorithm/MyNote/QuestionInNetwon.md)
 
 ## <a id='45-参考'>4.5 参考</a>
 [机器学习中的最优化算法总结](https://zhuanlan.zhihu.com/p/42689565)  
