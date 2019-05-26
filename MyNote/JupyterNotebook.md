@@ -23,15 +23,15 @@
 ## 2 问题积累
 1. **如何在jupyter notebook中运行.py文件?**
 	* 在\*\*\*.py文件的同一目录下建立一个\*\*\*.ipynb文件如图  
-	[Jupy1](Jupy1.png)
+	![Jupy1](Pictures/Jupy1.png)
 	* 在\*\*\*.ipynb文件中输入```%run \*\*\*\.py```或python文件的绝对路径，详情见图：  
-	[Jupy3](Jupy3.png)
+	![Jupy3](Pictures/Jupy3.png)
 2. Select run/debug configuration (选择run/debug的配置信息)
 	* Edit Configuration  
-	[图三](3.png)
+	![图三](Pictures/3.png)
 	* Create a new configuration  
-	[图四](4.png)
+	![图四](Pictures/4.png)
 	* Script path  
-	[图五](5.png)
+	![图五](Pictures/5.png)
 3. Test and Success (测试运行，试着打印一句话)  
-	[图六](6.png)
+	![图六](Pictures/6.png)
