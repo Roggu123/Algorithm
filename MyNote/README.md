@@ -33,9 +33,18 @@
 4.2 常用优化算法  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.1 梯度下降算法  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.2 梯度下降优化  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.3 牛顿法
-5. **CNN**  
-还未进行总结  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.3 牛顿法  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.4 拟牛顿法
+
+* **[5. QuestioninNewton](QuestionInNetwon.md)**  
+ * [5.1 收敛性](QuestionInNetwon.md#51-收敛性)  
+ * [5.2 正定性](QuestionInNetwon.md#52-Positive)
+ * [5.3 参考](QuestionInNetwon.md#53-参考)
+
+6. **CNN**  
+还未进行总结
+
+7. **[Mathmetics\_in\_AI](Mathmetics_in_AI.md)**  
 
 
 
