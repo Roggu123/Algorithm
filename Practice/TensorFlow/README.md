@@ -28,4 +28,10 @@ verify_shape：常量的形状是否可以被更改，默认不可更改;
 1. **[Docker](Docker)**-------在docker中使用tensorflow
 2. **[Anaconda](Anaconda)**-------在Anaconda中使用tensorflow
 
-
+```mermaid
+graph TD;
+  A-->B;
+  A-->C;
+  B-->D;
+  C-->D;
+  ```
