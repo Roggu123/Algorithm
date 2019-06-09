@@ -1,5 +1,5 @@
 # 资料整理
-<br><big>**1.[Algorithms 4th Ed - Robert Sedgewick, Kevin Wayne (2011)](Algorithms 4th Ed - Robert Sedgewick, Kevin Wayne (2011).pdf)**</big>
+<big>**1.[Algorithms 4th Ed - Robert Sedgewick, Kevin Wayne(2011)](Algorithms_4th_Ed.pdf)**
 <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*普林斯顿的算法教材，包含有数据结构和算法,此为pdf版，电子版更加方便，可以直接点击相关链接跳至完整代码部分；*
 <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*电子书还有一个标准库，可直接在下方搜索标准库里某个API，有绘图，排序等；还有测试用例，作业 ，PPT等;*
 <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*pdf版伴随文字有部分代码，无标准库，测试用例，作业，PPT等。*
