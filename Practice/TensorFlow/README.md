@@ -4,7 +4,25 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tensorflow是一个用于数值计算的强大开源软件库，非常适合大型机器学习，是世界上最受欢迎的开源机器学习框架。Tensorflow能把代码转换成操作图。而真正运行的正是这种图。将模型以图的形式展现出来后，工作者可以推迟或者删除不必要的操作。甚至重用部分结果，可以减少代码量。  
 
 ## 1.2 tensorflow常用包及函数介绍
-### 1.2.1 数据相关  
+### 1.2.1 数据计算有关   
+1. `tf.matmul(x,y)`  
+**作用**：  
+表示矩阵x与y相乘,注意与`tf.multiply()`区分  
+**参数解释**：  
+注意矩阵x与y的类型相同且尺寸符合乘法规则。  
+2. `tf.square(x)`  
+**作用**  
+计算元素x的平方。  
+3. `reduce_mean(input_tensor,axis=None,keep_dims=False,name=None)`  
+**作用**  
+沿张量(input_tensor)的某一维度求元素的平均值，这类操作也被称作降维。  
+**参数解释**  
+input_tensor: 被降维的张量;  
+axis: axis=none, 求全部元素的平均值；axis=0, 按列降维，求每列     平均值；axis=1，按行降维，求每行平均值;  
+keep_dims: 若值为True，可多行输出平均值;  
+name: 自定义操作的名称。   
+
+### 1.2.2 数据类型有关
 1. `tf.constant=(value, dtype=None, shape=None, name="Const", verify_shape=False)`  
 **作用**：  
 将数据转换为常量，即不可更改的常量。  
@@ -13,12 +31,13 @@ value: 符合tf中定义的数据类型的常数值或者常数列表;
 dtype：数据类型，可选;  
 shape：常量的形状，可选;  
 name：常量的名字，可选;  
-verify_shape：常量的形状是否可以被更改，默认不可更改;  
-2. `tf.matmul(x,y)`  
-**作用**：  
-表示矩阵x与y相乘,注意与`tf.multiply()`区分  
-**参数解释**：  
-注意矩阵x与y的类型相同且尺寸符合乘法规则。 
+verify_shape：常量的形状是否可以被更改，默认不可更改;   
+
+### 1.2.3 算法实现及优化  
++ **优化**
+ 1. `tf.train.GradientDescentOptimizer(学习率)`  
+   
+ 2. `tf.train.MomentumOptimizer(学习率，动量系数)`   
 
 
 ## <div id="12-参考">1.2 参考</div>  
