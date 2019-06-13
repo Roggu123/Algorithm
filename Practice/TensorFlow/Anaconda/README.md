@@ -18,7 +18,7 @@ Table of Contents
          * [1.3.3 管理图](#133-管理图)
          * [1.3.4 节点生命周期](#134-节点生命周期)  
          * [1.3.4 归一化](#135-归一化)
-         * [1.3.6 线性回归](#136-线性回归)
+         * [1.3.6 简单线性回归](#136-简单线性回归)
          * [1.3.7 梯度下降](#137-梯度下降)  
          
       * [1.4 参考](#14-参考)
@@ -200,7 +200,7 @@ scaled_housing_data_plus_bias = scaler.transform(X)
 `ValueError: setting an array element with a sequence.`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我发生这个报错是由于提前将数据`X`设定为了常量值。在进行归一化时由于`X`为常量，无法进行更改，所以会报错。解决办法为将数据转换为常量的操作放在归一化之后。
   
-### <div id="136-线性回归">1.3.6 线性回归初级</div>
+### <div id="136-简单线性回归">1.3.6 简单线性回归</div>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过线性回归对加州房价进行预测。通过运行程序得到线性表达式的参数，拟合加州住房数据的变化。具体代码如下：
 
 ```python
@@ -238,11 +238,141 @@ print(theta_value)
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码中的一些函数及包的详细介绍可参考[tensorflow常用包及函数介绍](/Users/ruogulu/Desktop/Study/Algorithm/Practice/TensorFlow/README.md)
 ### <div id="137-梯度下降">1.3.7 梯度下降</div> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过直接计算得到的参数值一定是不够精确的，还需要通过训练不断将参数进行优化，而梯度下降为常用的优化算法。  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在Tensorflow中可以通过手工计算梯度也可自动计算梯度，然后通过各种优化器对参数进一步优化。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过直接计算得到的参数值一定是不够精确的，还需要通过训练不断将参数进行优化，而[梯度下降](https://blog.csdn.net/lrglgy/article/details/89385672)为常用的优化算法。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在Tensorflow中可以通过手工和自动的方式计算梯度也可以通过种优化器计算并优化梯度，此外还可以修改数据的提供方式来实现最小梯度下降。它们的详细代码如下：
 
-+ 手工计算梯度
-+           
++ 准备工作
+  
+  1. 导入相关包  
+
+     ```python
+     import tensorflow as tf
+     import numpy as np
+     from sklearn.datasets import fetch_california_housing
+     from sklearn.preprocessing import StandardScaler
+     ```
+     
+  2. 下载并整理数据  
+  
+      ```python
+      housing = fetch_california_housing()
+      m,n = housing.data.shape # 获取数据的行列数
+      housing_data_plus_bias = np.c_[np.ones((m,1)),housing.data] # 为数据添加偏差项，即添加y=ax+b中的b
+      ```
+      
+   3. [数据预处理](https://blog.csdn.net/lrglgy/article/details/87882746)(归一化)  
+
+      ```python
+      scaler = StandardScaler().fit(housing_data_plus_bias)
+      scaled_housing_data_plus_bias = scaler.transform(housing_data_plus_bias)
+      ```
+
++ 手工计算梯度  
+通过公式计算梯度，手写梯度下降算法进行优化。  
+   
+  1. 创建计算图
+  
+      ```python
+      n_epochs = 1000
+      global_learning_rate = 0.01
+      X = tf.constant(scaled_housing_data_plus_bias, dtype=tf.float32, name="X")
+      y = tf.constant(housing.target.reshape(-1,1), dtype=tf.float32, name="y") # 数据标签
+      XT = tf.transpose(X)
+      theta = tf.Variable(tf.random_uniform([n+1,1],-1.0,1.0),name="theta")     # 参数
+      y_pred =  tf.matmul(X, theta, name="prediction")                          # 预测值
+      error = y_pred-y                                                          # 误差
+      mse = tf.reduce_mean(tf.square(error), name="mse")                        # 均方误差(成本函数)
+      gradient = 2/m * tf.matmul(XT, error)                                     # 梯度
+      training_op = tf.assign(theta, theta-global_learning_rate*gradient)       # 训练
+      ```
+      
+   2. 创建会话，执行计算图  
+
+      ```python
+      init = tf.global_variables_initializer()                                  # 添加初始化节点
+
+      with tf.Session() as sess:
+          sess.run(init)
+    
+          for epoch in range(n_epochs):                                       # 逐步训练
+            if epoch%100==0:
+               print("Epoch:", epoch, "MSE=", mse.eval())                    # 每一步均方误差
+               sess.run(training_op)                                             # 执行每一步训练，更新梯度
+        
+          best_theta = theta.eval()                                             # 训练完毕，返回最佳参数
+          print("The best theta is", best_theta)
+      ```  
+
++ 自动计算梯度  
+通过Tensorflow自带函数自动计算梯度，依然手写梯度下降算法进行优化。
+
+  1. 创建计算图  
+  只需在手工计算梯度的计算图上将`gradient=...`修改为：
+
+     ```python
+     gradient = tf.gradients(mse, [theta])[0]                                  # 使用反向自动微分计算梯度
+     ```  
+  在Tensorflow中自动计算梯度使用的是反向自动微分方法，此外还有数值微分，符号微分和前向自动微分，它们的用法及区别非本章重点，以后再进行研究总结。
+  2. 创建会话  
+  与手工计算梯度相同，不再赘述。  
+  
++ 优化器  
+自动计算梯度并利用Tensorflow中的优化器进行优化。
+
+  1. 创建计算图  
+  只需在自动计算梯度的计算图上将`training_op=...`修改为：
+  
+     ```python
+     ## 定义优化器(梯度下降)
+     # optimizer = tf.train.GradientDescentOptimizer(learning_rate =   global_learning_rate)
+     ## 定义优化器（动量）
+     optimizer = tf.train.MomentumOptimizer(learning_rate = global_learning_rate, momentum = 0.9)
+     training_op = optimizer.minimize(mse)
+     ```  
+  
+  2. 创建会话  
+  与自动计算梯度相同，不再赘述。  
+  
++ 批量梯度下降  
+要实现最小批量梯度下降算法，需要每次训练时用小批量替换输入数据X和y。可以添加一个占位符节点执行该替换操作。它不进行任何计算，只在运行时输出需要输出的值。  
+
+  1. 创建计算图  
+  需要将X，y定义为占位符节点并且定义批量的大小与批量的个数，其它与之前的计算图相同，但不可使用动量优化器：
+     
+     ```python
+     X = tf.placeholder(tf.float32, shape=(None, n+1), name="X")
+     y = tf.placeholder(tf.float32, shape=(None, 1), name="y")
+     batch_size = 100
+     n_batches= int(np.ceil(m/batch_size))
+     ```
+     
+  2. 创建会话  
+  先创建进行批量替换的函数，然后创建会话，详情如下：  
+      
+      ```python
+      init = tf.global_variables_initializer()                                  # 添加初始化节点
+
+      def fetch_batch(epoch, batch_index, batch_size):
+           np.random.seed(epoch * n_batches + batch_index) 
+           indices = np.random.randint(m, size=batch_size)
+           X_batch = scaled_housing_data_plus_bias[indices] 
+           y_batch = housing.target.reshape(-1, 1)[indices] 
+           return X_batch, y_batch
+
+      with tf.Session() as sess:
+          sess.run(init)
+    
+          for epoch in range(n_epochs):
+             for batch_index in range(n_batches):
+                X_batch, y_batch = fetch_batch(epoch, batch_index, batch_size)
+                sess.run(training_op, feed_dict={X:X_batch, y:y_batch})
+          best_theta = theta.eval()
+          print("The best theta is", best_theta)
+      ```
+  
+
+    
+
 ## <div id="14-参考">1.4 参考</div>
 Anaconda简介：  
 [1] 豆豆.[Anaconda介绍、安装及使用教程](https://zhuanlan.zhihu.com/p/32925500)  
@@ -259,8 +389,9 @@ Anaconda使用Tensorflow
 [2] blackx.[tensorflow中计算图的概念](https://www.cnblogs.com/hypnus-ly/p/8040951.html)  
 [3] c2a2o2.[TensorFlow数据归一化](https://blog.csdn.net/c2a2o2/article/details/83379941)  
 [4] 乖乖猪001.[tensorflow的归一化与梯度下降](https://blog.csdn.net/xiaozhaoshigedasb/article/details/84567068)  
-[5] 生活不只*眼前的苟且.[preprocessing.StandardScaler中fit、fit_transform、transform的区别](https://blog.csdn.net/u011734144/article/details/84066784) 
+[5] 生活不只*眼前的苟且.[preprocessing.StandardScaler中fit、fit_transform、transform的区别](https://blog.csdn.net/u011734144/article/details/84066784)  
+给训练算法提供数据  
+[6] Wanna_Go.[tensorflow的一些基础用法](https://www.cnblogs.com/wxshi/p/7956026.html) 
 
      
   
-
