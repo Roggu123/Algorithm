@@ -6,7 +6,8 @@ Table of Contents
        * [1.1 基本概念](#11-基本概念) 
            * [1.1.1 矩阵定义](#111-矩阵定义)
            * [1.1.2 向量定义](#112-向量定义)  
-           * [1.1.3 矩阵分类](#113-矩阵分类) 
+           * [1.1.3 矩阵分类](#113-矩阵分类)
+           * [1.1.4 矩阵方程](#114-矩阵方程) 
        * [1.2 基本运算](#12-基本运算)
        * [1.3 参考](#13-矩阵参考)
    * [第二章 误差](#2-误差)
@@ -36,14 +37,78 @@ Table of Contents
 #### <div id="113-矩阵分类">1.1.3 矩阵分类</div>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵可分为对称矩阵，可逆矩阵，分块矩阵， 方阵......  
 
+#### <div id="114-矩阵方程">1.1.4 矩阵方程</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对比矩阵方程，线性方程组，向量方程，通过逐步推导辨析三者区别，关系。探究他们有解的条件。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵方程与线性方程组，向量方程的关系密切，且在解决实际问题时它们经常会发生相互转化，因此学习矩阵方程时最好结合线性方程组，向量方程一起考虑。
+
++ 线性方程组
+$$
+\begin{aligned}
+a_1 x_1+a_2 x_2+a_3 x_3=b_1\\
+a_4 x_1+a_5 x_2+a_6 x_3=b_2\\
+a_7 x_1+a_8 x_2+a_9 x_3=b_3
+\end{aligned}\tag{1.1}
+$$    
+  1. 定义   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形如 $a_1 x_1+a_2 x_2+\dots+a_n x_n=b$ 的方程称为线性方程，其中 $b$ 与 $a_1,a_2,\dots,a_n$ 是实数或复数，通常为已知数。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线性方程组由一个或几个包含相同变量的线性方程组成的。  
+
+  2. 求解方法  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用行化简算法，先将线性方程组变为增广矩阵，然后利用行初等变换将其转化为简化阶梯形，进而求解变量。  
+
+  3. 重要定理  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当线性方程组的增广矩阵的最右列非主元列时，线性方程组有解即线性方程组相容。  
+
++ 向量方程  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将线性方程组（1.1）中的系数用向量表示为如下形式：  
+$$
+x_1 \mathbf{a_1}+x_2 \mathbf{a_2}+x_3 \mathbf{a_3}=\mathbf{b}\\
+\mathbf{a_1}=(a_1,a_4,a_7)\\
+\mathbf{a_2}=(a_2,a_5,a_8)\\
+\mathbf{a_3}=(a_3,a_6,a_9)\\
+\mathbf{b}=(b_1,b_2,b_3)
+$$  
+  1. 重要定理  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仅含一列的矩阵称为列向量，或简称向量。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向量方程 $x_1 \mathbf{a_1}+x_2 \mathbf{a_2}+x~_3 \mathbf{a_3}=\mathbf{b}$ 与增广矩阵为
+$\left[
+\begin{matrix}
+   \mathbf{a_1} &\mathbf{a_2} &\mathbf{a_3} &\mathbf{b}
+  \end{matrix} 
+\right]$
+的线性方程组有相同的结集；  
+  
+  2. 求解方法  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;转换为增广矩阵，同样利用行化简算法求解。  
+  
++ 矩阵方程  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向量的线性组合可视为矩阵与向量的乘积，线性方程组（1.1）用矩阵表示为如下形式：  
+$$
+A\mathbf{x}=\mathbf{b}\\
+\mathbf{x}=(x_1,x_2,x_3)\\
+\mathbf{b}=(b_1,b_2,b_3)\\
+A=\left[\begin{matrix} a_1 &a_2 &a_3\\ a_4 &a_5 &a_6\\ a_7 &a_8 &a_9 \end{matrix}\right]
+$$  
+  1. 定义  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形如$A\mathbf{x}=\mathbf{b}$ 的方程为矩阵方程。其中 $A$ 为 $m\times n$ 的矩阵，而 $\mathbf{x}$ 和 $\mathbf{b}$ 为 $n$ 维向量。  
+  
+  2. 求解方法  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同上$\dots$
+  
+  3. 性质  
+$$
+A(\mathbf{u}+\mathbf{v})=A\mathbf{u}+A\mathbf{v}\\
+A(c\mathbf{u})=cA\mathbf{u}
+$$  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中 $c$ 是标量，$A$ 是 $m\times n$ 矩阵，$\mathbf{u}$ 和 $\mathbf{v}$ 是 $\mathbb{R}^n$ 中的向量。  
+
 ### <div id="12-基本运算">1.2 基本运算</div>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵的基本运算包括加减乘除，逆.....
-
-### <div id="12-基本运算">1.2 基本运算</div>  
- 
+   
 
 ### <div id='13-矩阵参考'>1.3 参考</div> 
- 
+矩阵方程  
+[1] Lay.[线性代数及其应用](https://github.com/Roggu123/Algorithm/blob/master/Book/《线性代数及其应用》中文PDF_第4版_英文PDF_第5版_习题指导.rar) 
 
 ## <div id="2-误差">第二章 误差</div>  
 ### <div id="21-标准差">2.1 标准差</div>  
