@@ -5,7 +5,7 @@
 
 ## 1.2 tensorflow常用包及函数介绍
 ### 1.2.1 计算操作有关
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与Tensorflow中数据的计算操作有关的节点及函数的定义，使用的对比总结。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与Tensorflow中数据的数学计算操作有关的节点及函数的定义，使用。
    
 1. `tf.matmul(x,y)`  
 **作用**：  
@@ -29,6 +29,14 @@ name: 自定义操作的名称。
 4. `sess.run()`
 
 5. `变量名.eval`  
+
+6. `gradients=tf.gradients(mse,[theta])[0]`  
+**作用**  
+自动微分，即自动计算梯度。  
+**参数解释**  
+mse：操作符，计算均方误差；  
+theta：参数列表；  
+创建一个操作符的列表计算每个变量的梯度。  
 
 ### 1.2.2 数据有关
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对tensorflow中各种不同类型数据节点的总结比较。数据类型转换，数据整理，数据获取。
