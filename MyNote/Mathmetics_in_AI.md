@@ -9,7 +9,8 @@ Table of Contents
            * [1.1.3 矩阵分类](#113-矩阵分类)
            * [1.1.4 矩阵方程](#114-矩阵方程) 
        * [1.2 基本运算](#12-基本运算)  
-           * [1.2.1 矩阵求导](#121-矩阵求导) 
+           * [1.2.3 矩阵求导](#123-矩阵求导)
+           * [1.2.4 参数标准方程推导](#124-参数标准方程推导) 
        * [1.3 参考](#13-矩阵参考)
    * [第二章 误差](#2-误差)
        * [2.1 标准差](#21-标准差)
@@ -44,7 +45,6 @@ Table of Contents
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵可分为对称矩阵，可逆矩阵，分块矩阵， 方阵......  
 
 #### <div id="114-矩阵方程">1.1.4 矩阵方程</div>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对比矩阵方程，线性方程组，向量方程，通过逐步推导辨析三者区别，关系。探究他们有解的条件。
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵方程与线性方程组，向量方程的关系密切，且在解决实际问题时它们经常会发生相互转化，因此学习矩阵方程时最好结合线性方程组，向量方程一起考虑。
 
 + 线性方程组
@@ -110,12 +110,17 @@ $$
 
 ### <div id="12-基本运算">1.2 基本运算</div>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵的基本运算包括加减乘除，逆.....  
-### <div id="121-矩阵求导">1.2.1 矩阵求导</div>  
+### <div id="123-矩阵求导">1.2.3 矩阵求导</div>  
 **思路**：  
   
  1. 矩阵求导有两种布局：分子布局，分母布局  
  2. 每种布局又有五种形式，标量对向量，向量对标量，矩阵对标量，标量对矩阵，向量对向量。  
  3. 先学会如何求，然后探究为什么有两种布局。  
+  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵求导包含两种布局
+ 
+### <div id="124-参数标准方程推导">1.2.4 参数标准方程推导</div>  
+   
    
 **参考**：  
 [1] Vinicier.[机器学习中的线性代数之矩阵求导](https://blog.csdn.net/u010976453/article/details/54381248)  
@@ -143,7 +148,7 @@ $$
 [1] -牧野-.[交叉熵损失函数和均方误差损失函数](https://blog.csdn.net/dcrmg/article/details/80010342)  
 [2] Geron.[机器学习实战]() (P43-P44)  
 
-## <div id="3-学习笔记">第三章 学习笔记</div>
+## <div id="3-学习笔记">第三章 线性代数学习笔记</div>
 ### <div id="31-线性相关">3.1 线性相关</div>  
 + 线性相关定义：  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若$\mathbb{R}^n$中一组向量$\{v_1,v_2,\dots,v_p\}$为线性无关，若向量方程：$$x_1v_1+x_2v_2+\dots+x_pv_p=0$$  
@@ -153,9 +158,31 @@ $$
   1. 将齐次方程转化为增广矩阵，若有自由变量则线性相关；
   2. 对于两个向量，若一个向量是另一个向量的倍数则它们线性有关；
   3. 观察向量方程，若向量个数超过方程个数则线性相关；  
+  
+> 齐次方程： 形如 $\mathbf{A}x=\mathbf{0}$ 的线性方程组，其中$\mathbf{A}$ 为 $m\times n$ 的矩阵，$\mathbf{0}$ 为 $\mathbb{R}^m$ 中的零向量。
+  
 
 ### <div id="32-线性变换">3.2 线性变换</div>  
-
++ 定义：  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;变换（或映射）$T$ 称为线性的，若  
+（1）对于 $T$ 定义域中一切 $\mathbf{u}$ 和 $\mathbf{v}$，$T(\mathbf{v} + \mathbf{u}) = T(\mathbf{u})+T(\mathbf{v})$。  
+（2）对一切 $\mathbf{u}$ 和标量 c，$T(c\mathbf{u}) = cT(\mathbf{u})$。  
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;映射$T:\mathbb{R}^n\rightarrow\mathbb{R}^m$为到 $\mathbb{R}^m$ 的映射，若 $\mathbb{R}^m$ 中的任意 $\mathbf{b}$ 都至少有一个 $\mathbb{R}^n$ 中的 $\mathbf{x}$ 与之对应（也称为满射）。  
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;映射 $T:\mathbb{R}^n\rightarrow\mathbb{R}^m$ 称为一对一映射，若 $\mathbb{R}^m$ 中每一 $\mathbf{b}$ 都至多有一个 $\mathbb{R}^n$ 至多一个 $x$ 与之对应。 
++ 性质：  
+若 $T$ 是线性变换，则  
+（1）$T(\mathbf{0}) = \mathbf{0}$；  
+（2）$T(c\mathbf{u}+d\mathbf{v}) = cT(\mathbf{u}) + dT(\mathbf{v})$；  
+（3）$T(c_1\mathbf{v}_1+c_2\mathbf{v}_2+\dots+c_p\mathbf{v}_p)=c_1T(\mathbf{v}_1)+c_2T(\mathbf{v}_2)+\dots+c_p\mathbf{v}_p$。  
++ 重要定理：  
+（1）设 $T:\mathbb{R}^n\rightarrow\mathbb{R}^m$ 为线性变换，则存在唯一的矩阵 $\mathbf{A}$ 使$$T(x)=\mathbf{A}x，对 \mathbf{R}^n 中的一切x$$其中，$\mathbf{A}$是$m\times n$矩阵，它的第 j 列是向量 $T(\mathbf{e}_j)$，  $\mathbf{e}_j$ 是单位矩阵 $\mathbf{I}_n$ 的第 j 列：$$\mathbf{A}=[T(\mathbf{e}_1)\dots T(\mathbf{e}_n)]$$矩阵 $\mathbf{A}$ 称为线性变换的标准矩阵。  
+  
+  （2）存在与唯一性问题可以将线性变换与前面的线性方程，线性无关相互联系起来：  
+  设 $T:\mathbb{R}^n\rightarrow\mathbb{R}^m$ 是线性变换，设 $A$ 是 $T$ 的标准矩阵，则  
+  a. $T$ 为到 $\mathbb{R}^m$ 上的映射，当且仅当 $A$ 的各列生成 $\mathbf{R}^m$，即方程 $Ax=b$ 有解；  
+  b. $T$ 是一对一映射，当且仅当 $A$ 的列线性无关，即方程 $Ax=0$ 仅有平凡解。
 
 ### <div id="33-参数标准方程推导">3.3 参数标准方程推导</div>  
 **参考**：  
