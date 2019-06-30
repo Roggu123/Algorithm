@@ -1,28 +1,29 @@
 Table of Contents
 =================
 
-   * [Anaconda学习记录](#anaconda学习记录)
-      * [1.1 Anaconda简介](#11-anaconda简介)
-         * [1.1.1 Anaconda、conda、pip、virtualenv的区别](#111-anacondacondapipvirtualenv的区别)
-      * [1.2 Anaconda安装Tensorflow](#12-anaconda安装tensorflow)
-         * [1.2.1 安装Anaconda](#121-安装anaconda)
-         * [1.2.2 在Anaconda中激活安装tensorflow](#122-在Anaconda中激活安装tensorflow)
-         * [1.2.3 在tensorflow中安装Jupyter Notebook](#123-在tensorflow中激活安装jupyter-notebook)
-         * [1.2.4 在terminal中运行Tensorflow](#124-在terminal中运行tensorflow)
-         * [1.2.5 在jupyter notebook中运行tensorflow](#125-在jupyter-notebook中运行tensorflow)
-         * [1.2.6 报错解决](#126-报错解决)  
+* [Anaconda学习记录](#anaconda学习记录)
+   * [1.1 Anaconda简介](#11-anaconda简介)
+      * [1.1.1 Anaconda、conda、pip、virtualenv的区别](#111-anacondacondapipvirtualenv的区别)
+   * [1.2 Anaconda安装Tensorflow](#12-anaconda安装tensorflow)
+      * [1.2.1 安装Anaconda](#121-安装anaconda)
+      * [1.2.2 在Anaconda中激活安装tensorflow](#122-在Anaconda中激活安装tensorflow)
+      * [1.2.3 在tensorflow中安装Jupyter Notebook](#123-在tensorflow中激活安装jupyter-notebook)
+      * [1.2.4 在terminal中运行Tensorflow](#124-在terminal中运行tensorflow)
+      * [1.2.5 在jupyter notebook中运行tensorflow](#125-在jupyter-notebook中运行tensorflow)
+      * [1.2.6 报错解决](#126-报错解决)  
            
-      * [1.3 Tensorflow使用](#13-tensorflow使用)  
-         * [1.3.1 创建图](#131-创建图)
-         * [1.3.2 执行图](#132-执行图)  
-         * [1.3.3 管理图](#133-管理图)
-         * [1.3.4 节点生命周期](#134-节点生命周期)  
-         * [1.3.4 归一化](#135-归一化)
-         * [1.3.6 简单线性回归](#136-简单线性回归)
-         * [1.3.7 梯度下降](#137-梯度下降)  
-         * [1.3.8 模型保存与恢复](#138-模型保存与恢复)  
+   * [1.3 Tensorflow使用](#13-tensorflow使用)  
+      * [1.3.1 创建图](#131-创建图)
+      * [1.3.2 执行图](#132-执行图)  
+      * [1.3.3 管理图](#133-管理图)
+      * [1.3.4 节点生命周期](#134-节点生命周期)  
+      * [1.3.4 归一化](#135-归一化)
+      * [1.3.6 简单线性回归](#136-简单线性回归)
+      * [1.3.7 梯度下降](#137-梯度下降)  
+      * [1.3.8 模型保存与恢复](#138-模型保存与恢复)
+      * [1.3.9 Tensorboard可视化](#139-Tensorboard可视化)  
          
-      * [1.4 参考](#14-参考)
+   * [1.4 参考](#14-参考)
 
 # Anaconda学习记录
 学习使用Anaconda
@@ -462,7 +463,130 @@ print(theta_value)
   1. **Checkpoint**：是一个文本文件，用于保存断点文件列表和迅速查找最近一次的断点文件；  
   2. **meta**：序列化二进制文件，保存图结构信息；  
   3. **data**：保存模型变量即参数的值；
-  4. **index**：保存模型参数名。
+  4. **index**：保存模型参数名。  
+  
+## <div id="139-Tensorboard可视化">1.3.9 Tensorboard可视化</div>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TensorboardTensorboard可以用来可视化图和训练曲线，可以帮助识别图的错误及瓶颈。下面以最小批量梯度下降算法为例探究Tensorboard的使用。  
+ 
+1. 导入包  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所用包与之前类似，额外导入datatime包，方便使用系统时间命名日志文件，具体代码如下：  
+
+  ```python
+  import tensorflow as tf
+  import numpy as np
+  from sklearn.datasets import fetch_california_housing
+  from sklearn.preprocessing import StandardScaler
+  from datetime import datetime
+  ```  
+
+2. 数据处理  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将数据下载，整理并预处理。  
+
+  ```python
+  housing = fetch_california_housing()
+  m,n = housing.data.shape # 获取数据的行列数
+  housing_data_plus_bias = np.c_[np.ones((m,1)),housing.data] # 为数据添加偏差项， 即添加y=ax+b中的b，其中b为1
+  # 数据预处理，归一化
+  scaler = StandardScaler().fit(housing_data_plus_bias)
+  scaled_housing_data_plus_bias = scaler.transform(housing_data_plus_bias)
+  ```  
+  
+3. 设置日志文件  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义日志文件目录，每次运行时指定不同的日志文件，否则Tensorboard会自动将同目录下同名文件合并，导致可视化结果混乱。所以最方便的命名方法是利用本地时间戳进行命名。  
+  
+  ```python
+  now = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+  root_logdir = "tf_logs"
+  logdir = "{}/run-{}/".format(root_logdir,now)
+  # # 以下代码放置在构造期最后  
+  # mse_summary = tf.summary.scalar('MSE',mse)  
+  # file_writer = tf.summary.FileWriter(logdir, tf.get_default_graph())
+  ```  
+  
+4. 创建计算图（构造期）  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将图的定义与训练状态写入Tensorboard需要读取的日志文件中。  
+
+  ```python
+  X = tf.placeholder(tf.float32, shape=(None, n+1), name="X")
+  y = tf.placeholder(tf.float32, shape=(None, 1), name="y")
+  n_epochs = 1000
+  batch_size = 100
+  n_batches= int(np.ceil(m/batch_size))
+  global_learning_rate = 0.01
+  XT = tf.transpose(X)
+  theta = tf.Variable(tf.random_uniform([n+1,1],-1.0,1.0),name="theta")     # * 参数 seed=42
+  y_pred =  tf.matmul(X, theta, name="prediction")                          # 预测值
+  error = y_pred-y                                                          # 误差
+  mse = tf.reduce_mean(tf.square(error), name="mse")                        # 均方误差(成本函数)
+  ## 定义优化器(梯度下降)
+  optimizer = tf.train.GradientDescentOptimizer(learning_rate =   global_learning_rate)
+  training_op = optimizer.minimize(mse)
+
+  mse_summary = tf.summary.scalar('MSE',mse)                                # 创建了用来求MSE值的节点，并将其写入称为汇总（summary）的二进制日志字符串中  
+  file_writer = tf.summary.FileWriter(logdir, tf.get_default_graph())       # 创建一个将汇总写入日志目录的file_writer
+  ```  
+  
+5. 创建会话（执行期）  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在训练时定期求值mse_summary节点，将汇总信息输出，并利用file_writer将其写入事件文件（日志文件）。  
+  
+  ```python
+  init = tf.global_variables_initializer()                                  # 添加初始化节点
+
+  def fetch_batch(epoch, batch_index, batch_size):
+    # ？？？？
+    np.random.seed(epoch * n_batches + batch_index) 
+    indices = np.random.randint(m, size=batch_size)
+    X_batch = scaled_housing_data_plus_bias[indices] 
+    y_batch = housing.target.reshape(-1, 1)[indices] 
+    return X_batch, y_batch
+
+  with tf.Session() as sess:
+      sess.run(init)
+    
+      for epoch in range(n_epochs):
+          for batch_index in range(n_batches):
+              X_batch, y_batch = fetch_batch(epoch, batch_index, batch_size)
+            
+              # 将均方误差mse写入日志文件
+              if batch_index % 10 == 0:
+                  summary_str = mse_summary.eval(feed_dict={X:X_batch, y:y_batch})
+                  step = epoch * n_batches + batch_index
+                  file_writer.add_summary(summary_str, step)
+                
+              sess.run(training_op, feed_dict={X:X_batch, y:y_batch})
+      best_theta = theta.eval()
+      print("The best theta is", best_theta)
+      file_writer.close()
+  ```  
+  
+6. 运行结果  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行会话后输出最终参数值并在目录`./tf_logs/run-20190410073421`下（目录名即系统时间戳）生成文件`events.out.tfevents.1561521973.BaoDadeMacBook-Pro.local`。  
+7. 启动Tensorboard服务器
+ 可以通过多种方式启动Tensorboard服务，可以通过virtualenv新建一个虚拟环境并启动Tensorboard，也可以在当前文件下直接启动Tensorboard，个人感觉两者并无太大差别，只要保证启动Tensorboard服务的目录一样就好。  
+ + 激活已创建的virtualenv环境  
+ 启动Tensorboard: `tensorboard --logdir=./tf_logs/（file_writer序列化数据的存储路径）`  
+ 启动完毕后：浏览器输入`localhost:6006`  
+   
+ 在本地目录下创建一个virtualenv环境,然后启动Tensorboard；
+ 查找如何在Jupyternotebook中启动Tensorboard服务；  
+ 
+ + 进入存储日志文件的目录下  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在代码文件的上级目录新建终端文件并进入`tf_logs`文件夹所在目录；  
+ + 启动Tensorboard服务  
+ `tensorboard --logdir=tf_logs/`  
+
+8. 查看训练状态  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由终端提示`TensorBoard 1.13.1 at ...local:6006`可知Tensorboard服务已启动并在6006端口监听，在浏览器中输入`loclahost:6006`可查看Tensorboard的监听界面如下：  
+![ALt text](Pictures/Tensorboard_1.png)
+<center>图9-1.TensordBoard监听界面</center>  
+9. 使用Tensorboard  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再次运行之前的代码，将产生新的日志文件。关于Tensorboard的使用可参见图9-2和图9-3。  
+![Alt text](Pictures/Tensorboard_Event.png)  
+<center>图9-2.训练过程</center>  
+![Alt text](Pictures/Tensorboard_Graph.png)  
+<center>图9-3.图结构</center>  
+
+ 
   
 ## <div id="14-参考">1.4 参考</div>
 Anaconda简介：  
@@ -485,7 +609,9 @@ Anaconda使用Tensorflow
 [6] Wanna_Go.[tensorflow的一些基础用法](https://www.cnblogs.com/wxshi/p/7956026.html)   
 模型保存与恢复    
 [7] jimlee.[为什么tesnorflow保存model.ckpt文件会生成4个文件？](https://www.zhihu.com/question/61946760)   
-[8] pan_jinquan.[tensorflow实现将ckpt转pb文件](https://blog.csdn.net/guyuealian/article/details/82218092#ckpt-转换成-pb格式) 
+[8] pan_jinquan.[tensorflow实现将ckpt转pb文件](https://blog.csdn.net/guyuealian/article/details/82218092#ckpt-转换成-pb格式)  
+Tensorboard可视化  
+[9] Geron.[机器学习实战](https://book.douban.com/subject/30317874/) 
 
      
   
