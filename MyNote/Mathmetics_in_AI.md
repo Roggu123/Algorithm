@@ -189,8 +189,14 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本文将从定义，运算定理，作用三个角度对行列式，特征向量和特征值进行辨析。  
 
 + **定义**  
-行列式：当$n \geq2$时，$n\times n$矩阵$A$的行列式为$\pm a_{1j}detA_{1j}$，其中$a_{1j}$表示矩阵$A$的第一行，其中加减号交替出现。  
-特征向量：有$n\times n$矩阵$A$，向量$x$是非零向量，若$Ax=\lambda x$，那么$\lambda$为矩阵$A$的特征值，向量$x$为对应特征值的特征向量。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当$n \geq2$时，$n\times n$矩阵$A$的**行列式**为形如$\pm a_{1j}detA_{1j}$的$n$项的和，其中$a_{11},a_{12},\dots,a_{1n}$来自矩阵$A$的第一行，其中加减号交替出现，即  
+$$
+\begin{align}
+det A &= a_{11}\cdot det A_{11}-a_{12}\cdot det A_{12}+ \dots+(-1)^{i+j}a_{1n} det A_{1n}\\
+&= \sum_{j=1}^{n}(-1)^{1+j}a_{1j} det A_{1j}
+\end{align}
+$$  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有$n\times n$矩阵$A$，$x$是非零向量，若存在数$\lambda$使$Ax=\lambda x$成立，那么称$\lambda$为矩阵$A$的**特征值**，向量$x$为对应$\lambda$的**特征向量**。  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由如上定义可知，行列式和特征值都表示一个值，而特征向量是一个向量，因此特征向量和行列式关系不大。特征值和行列式都是方阵的值，这是它们的相似之处。 然而，一个方阵只有一个行列式，但却有多个特征值。
 
 ### <div id="34-参数标准方程推导">3.4 参数标准方程推导</div>  
