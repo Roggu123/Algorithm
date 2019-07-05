@@ -69,7 +69,7 @@ $$
 + 向量方程  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将线性方程组（1.1）中的系数用向量表示为如下形式：  
 $$
-x_1 \mathbf{a_1}+x_2 \mathbf{a_2}+x_3 \mathbf{a_3}=\mathbf{b}\\
+\mathbf{a_1}x_1+\mathbf{a_2}x_2+\mathbf{a_3}x_3=\mathbf{b}\\
 \mathbf{a_1}=(a_1,a_4,a_7)\\
 \mathbf{a_2}=(a_2,a_5,a_8)\\
 \mathbf{a_3}=(a_3,a_6,a_9)\\
@@ -111,14 +111,27 @@ $$
 
 ### <div id="12-基本运算">1.2 基本运算</div>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵的基本运算包括加减乘除，逆.....  
-### <div id="123-矩阵求导">1.2.3 矩阵求导</div>  
+### <div id="123-矩阵求导">1.2.3 矩阵微积分</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵微积分就是用向量和矩阵来表示因变量中每个分量对自变量中每个分量的导数。根据变量格式可以将矩阵微分简单概括为表3-1所示的9种形式：
+<div align="center">
+
+|             |标量$y$      |向量$\mathbf{y}$    |矩阵$\mathbf{Y}$  |  
+|----            |:---------:|:----: |:----:|  
+|标量$x$          |$\frac{\partial y}{\partial x}$|$\frac{\partial\mathbf{y}}{\partial x}$|$\frac{\partial\mathbf{Y}}{\partial x}$|   
+|向量$\mathbf{x}$ |$\frac{\partial y}{\partial\mathbf{x}}$|$\frac{\partial\mathbf{y}}{\partial\mathbf{x}}$||
+|矩阵$\mathbf{X}$ |$\frac{\partial y}{\partial\mathbf{X}}$||| 
+</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;易知，表格中有三项为空，分别为矩阵$\mathbf{Y}$对向量$\mathbf{x}$的导数，矩阵$\mathbf{Y}$对矩阵$\mathbf{X}$的导数和向量$\mathbf{x}$对矩阵$\mathbf{Y}$的导数，这是由于矩阵$\mathbf{Y}$对向量$\mathbf{x}$的导数可视为矩阵$\mathbf{Y}$对多个标量 $x_i$ 求导，其结果是秩超过2的张量，无法用一个二维矩阵表示。其它的类似。  
 **思路**：  
   
  1. 矩阵求导有两种布局：分子布局，分母布局  
  2. 每种布局又有五种形式，标量对向量，向量对标量，矩阵对标量，标量对矩阵，向量对向量。  
  3. 先学会如何求，然后探究为什么有两种布局。  
   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵求导包含两种布局
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;矩阵求导包含分子布局和分母布局两种布局，分别为两种求导规则。  
+**分子布局**  
+Vinicier.[机器学习中的线性代数之矩阵求导](https://blog.csdn.net/u010976453/article/details/54381248)这篇博客错误很多，但其中分子布局求导有一定参考价值，  
+
  
 ### <div id="124-参数标准方程推导">1.2.4 参数标准方程推导</div>  
    
@@ -126,7 +139,9 @@ $$
 **参考**：  
 [1] Vinicier.[机器学习中的线性代数之矩阵求导](https://blog.csdn.net/u010976453/article/details/54381248)  
 [2] Echo.[矩阵求导 -- 机器学习常用](https://www.cnblogs.com/echo-coding/p/8629197.html)  
-[3] Veröffentlicht am.[矩阵求导笔记](https://yushroom.github.io/2016/08/12/Matrix-Calculus/)
+[3] Veröffentlicht am.[矩阵求导笔记](https://yushroom.github.io/2016/08/12/Matrix-Calculus/)  
+[4] 仙守.[数学-矩阵计算（4）两种布局](https://blog.csdn.net/shouhuxianjian/article/details/46669365)  
+[5] 维基.[Matrix_calculus](https://en.wikipedia.org/wiki/Matrix_calculus#Layout_conventions)
    
 
 ### <div id='13-矩阵参考'>1.3 参考</div> 
@@ -206,3 +221,4 @@ $$
   
  
 
+ 
