@@ -22,8 +22,10 @@ Table of Contents
       * [1.3.7 梯度下降](#137-梯度下降)  
       * [1.3.8 模型保存与恢复](#138-模型保存与恢复)
       * [1.3.9 Tensorboard可视化](#139-Tensorboard可视化)  
+   * [1.4 Tensorflow搭建神经网络](#14-tensorflow搭建神经网络) 
+      * [1.4.1 命名作用域](#141-命名作用域)  
          
-   * [1.4 参考](#14-参考)
+   * [1.5 参考](#15-参考)
 
 # Anaconda学习记录
 学习使用Anaconda
@@ -373,7 +375,7 @@ print(theta_value)
           print("The best theta is", best_theta)
       ```
   
-## <div id="138-模型保存与恢复">1.3.8 模型保存与恢复</div>
+### <div id="138-模型保存与恢复">1.3.8 模型保存与恢复</div>
 + **保存模型**  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要保存已经训练好的模型在构造期末尾创建一个 saver 节点，在执行期中调用save()方法，传入一个会话和检查点文件的路径即可。以保存加州房价线性模型为例（构造阶段前的代码并无改动，[原代码](https://blog.csdn.net/lrglgy/article/details/91644497#5-梯度下降)复制即可）： 
 
@@ -465,7 +467,7 @@ print(theta_value)
   3. **data**：保存模型变量即参数的值；
   4. **index**：保存模型参数名。  
   
-## <div id="139-Tensorboard可视化">1.3.9 Tensorboard可视化</div>  
+### <div id="139-Tensorboard可视化">1.3.9 Tensorboard可视化</div>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TensorboardTensorboard可以用来可视化图和训练曲线，可以帮助识别图的错误及瓶颈。下面以最小批量梯度下降算法为例探究Tensorboard的使用。  
  
 1. 导入包  
@@ -586,9 +588,51 @@ print(theta_value)
 ![Alt text](Pictures/Tensorboard_Graph.png)  
 <center>图9-3.图结构</center>  
 
+## <div id="14-tensorflow搭建神经网络">1.4 tensorflow搭建神经网络</div> 
+### <div id="141-命名作用域">1.4.1 命名作用域</div>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在搭建和处理非常复杂的神经网络模型时，图非常容易变得异常庞大而杂乱。大量的节点会使图变得更加晦涩难懂。因此要通过命名作用域的方式将节点分组。在上一节[Tensorboard可视化](Tensorboard139-可视化)代码的基础上进行进一步修改。切记要在构造期中命名作用域，即用代码：  
+
+```python
+with tf.name_scope("loss") as scope:
+  error = y_pred-y
+  mse = tf.reduce_mean(tf.square(error),name="mse")
+```  
+替换构造期中原先的代码：  
+
+```python
+error = y_pred-y
+mse = tf.reduce_mean(tf.square(error),name="mse")
+```  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在原始代码中命名作用域后，结果对比如下：  
+
+<figure class="half">
+<div align="center">
+<img src="Pictures/With_Namespace1.png" width="280" height="180">
+<img src="Pictures/Without_Namespace1.png" width="280" height="180">
+</div>
+</figure>
+<center>图4-1 输出结果对比</center>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由图4-1可知，左图为定义命名作用域后的输出结果，右图为未定义命名作用域的结果。在命名作用域中定义的每个操作都有一个"loss/"前缀。
+
+<figure class="half">
+<div align="center">
+<img src="Pictures/With_Namespace.png" width="280" height="250"/>
+<img src="Pictures/Without_Namespace.png" width="280" height="250">
+</div>
+</figure>
+<center>图4-2 图对比</center>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由图4-2可知，左图为命名作用域后的计算图，右图则没有定义命名作用域，右图中的 mse 和 sub 节点等都包含在左图中的 loss 节点中。将节点分类之后，计算图看起来更加简洁明了。对计算图的整体结构有更加清晰的了解。
+
+
+   
+
  
   
-## <div id="14-参考">1.4 参考</div>
+## <div id="15-参考">1.5 参考</div>  
+《机器学习实战》官方代码参考：  
+[1] ageron.[Machine Learning Notebooks](https://github.com/ageron/handson-ml)  
+
 Anaconda简介：  
 [1] 豆豆.[Anaconda介绍、安装及使用教程](https://zhuanlan.zhihu.com/p/32925500)  
 [2] 刘允鹏.[如何通俗解释Docker是什么？](https://www.zhihu.com/question/28300645)  
@@ -611,7 +655,12 @@ Anaconda使用Tensorflow
 [7] jimlee.[为什么tesnorflow保存model.ckpt文件会生成4个文件？](https://www.zhihu.com/question/61946760)   
 [8] pan_jinquan.[tensorflow实现将ckpt转pb文件](https://blog.csdn.net/guyuealian/article/details/82218092#ckpt-转换成-pb格式)  
 Tensorboard可视化  
-[9] Geron.[机器学习实战](https://book.douban.com/subject/30317874/) 
+[9] Geron.[机器学习实战](https://book.douban.com/subject/30317874/). 
+
+Tensorflow搭建神经网络  
+命名作用域（scope）  
+[1] Miss_wang.[Tensorflow中的命名空间scope](https://www.cnblogs.com/studyDetail/p/6576017.html)
+ 
 
      
   
